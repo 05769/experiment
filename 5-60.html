@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>認知負荷とAI盲従に関する実験タスク</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 15px 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* 上部固定タイマー（幅広化） */
+        .fixed-header {
+            display: none; 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 9999;
+            padding: 12px 0 8px 0;
+        }
+
+        .timer-inner {
+            max-width: 960px; /* タイマーの幅も全体に合わせて拡大 */
+            width: 95%;
+            margin: 0 auto;
+        }
+
+        /* メインコンテナ（画面幅を拡大） */
+        .container {
+            background-color: #ffffff;
+            max-width: 960px; /* 750px → 960px へ拡大 */
+            width: 95%;       /* 画面幅いっぱいを活用 */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .task-mode {
+            margin-top: 100px; 
+        }
+
+        /* 縦並びレイアウト */
+        .experiment-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* タイマーバー */
+        .timer-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .timer-bar {
+            width: 100%;
+            height: 100%;
+            background-color: #ff4d4d;
+            transition: width 0.1s linear;
+        }
+        .time-text {
+            font-size: 14px;
+            font-weight: bold;
+            color: #ff4d4d;
+            text-align: right;
+            margin-top: 4px;
+        }
+        .phase-badge {
+            display: inline-block;
+            background-color: #333;
+            color: #fff;
+            padding: 3px 8px;
+            font-size: 12px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .question-num-badge {
+            display: inline-block;
+            background-color: #007aff;
+            color: #fff;
+            padding: 3px 8px;
+            font-size: 12px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        /* 注意事項ページ */
+        .notice-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #222;
+            border-bottom: 3px solid #007aff;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .notice-list {
+            padding-left: 20px;
+            line-height: 1.8;
+            font-size: 15px;
+            color: #444;
+            margin: 0;
+        }
+        .notice-list li {
+            margin-bottom: 10px;
+        }
+        
+        .rule-box {
+            background-color: #fff3cd;
+            border: 2px solid #ffeeba;
+            border-left: 6px solid #ffc107;
+            padding: 18px;
+            margin: 20px 0;
+            border-radius: 6px;
+            color: #856404;
+        }
+        .rule-box h3 {
+            margin: 0 0 12px 0;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        .step-timeline {
+            margin: 12px 0;
+            padding: 14px;
+            background-color: rgba(255,255,255,0.7);
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        .step-highlight {
+            font-weight: bold;
+            color: #b52a2a;
+        }
+        .danger-alert {
+            background-color: #f8d7da;
+            border-left: 5px solid #dc3545;
+            color: #721c24;
+            padding: 10px 12px;
+            margin-top: 12px;
+            border-radius: 4px;
+            font-size: 13.5px;
+            font-weight: bold;
+        }
+        .trigger-alert {
+            color: #d63031;
+            font-weight: bold;
+            font-size: 13.5px;
+            margin-top: 12px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .start-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background-color: #007aff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,122,255,0.3);
+            transition: all 0.2s;
+            margin-top: 20px;
+        }
+        .start-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* 実験コンテンツ */
+        #experiment-content {
+            display: none;
+        }
+
+        .question-box {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .question-text {
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 1.6;
+            color: #222;
+            margin: 0 0 12px 0;
+            text-align: left;
+        }
+        .question-image {
+            max-width: 100%;
+            max-height: 40vh;
+            height: auto;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin: 10px auto 0 auto;
+            display: block;
+        }
+        
+        .btn-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .choice-btn {
+            padding: 14px 0;
+            font-size: 17px;
+            font-weight: bold;
+            border: 2px solid #ccc;
+            background-color: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .choice-btn:hover:not(:disabled) {
+            background-color: #eef5ff;
+            border-color: #007aff;
+        }
+        .choice-btn.selected {
+            background-color: #007aff;
+            color: #fff;
+            border-color: #0056b3;
+        }
+        .choice-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .choice-btn.selected:disabled {
+            background-color: #007aff;
+            color: #fff;
+            opacity: 1;
+        }
+        
+        /* アクションボタン */
+        .action-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.2s;
+        }
+        .action-btn:disabled {
+            background-color: #ccc !important;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        #step1-submit-btn {
+            background-color: #007aff;
+        }
+        #step1-submit-btn:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
+        #submit-btn {
+            background-color: #28a745;
+            margin-top: 20px;
+        }
+        #submit-btn:hover:not(:disabled) {
+            background-color: #218838;
+        }
+
+        /* AI分析セクション */
+        #ai-section {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fef1f1;
+            border-left: 5px solid #ff4d4d;
+            border-radius: 6px;
+        }
+        .ai-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #d93838;
+            margin: 0 0 8px 0;
+        }
+        .ai-text {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #444;
+            margin: 0;
+        }
+
+        /* 事後アンケート画面 */
+        #survey-page {
+            display: none;
+        }
+        .survey-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #222;
+            border-bottom: 2px solid #007aff;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .survey-group {
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 6px;
+        }
+        .survey-label {
+            font-size: 15px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            display: block;
+            line-height: 1.5;
+        }
+        .likert-scale {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+        .likert-option {
+            text-align: center;
+            font-size: 13px;
+            color: #555;
+            flex: 1;
+        }
+        .likert-option input {
+            margin-bottom: 6px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            cursor: pointer;
+        }
+        .radio-inline-group {
+            display: flex;
+            gap: 20px;
+            background: #fff;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            flex-wrap: wrap;
+        }
+        .radio-inline-label {
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .survey-textarea {
+            width: 100%;
+            height: 90px;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        /* 完了画面 */
+        #finish-page {
+            display: none;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .finish-title {
+            font-size: 24px;
+            color: #28a745;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .debriefing-box {
+            background-color: #f8f9fa;
+            border: 2px solid #007aff;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: left;
+            margin: 15px 0;
+            line-height: 1.8;
+            font-size: 14.5px;
+            color: #333;
+        }
+        .debriefing-title {
+            font-weight: bold;
+            color: #007aff;
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* レスポンシブ対応（スマホ表示時も最大幅をキープ） */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 8px 4px;
+            }
+            .container {
+                width: 98%;
+                padding: 16px 12px;
+                border-radius: 8px;
+            }
+            .timer-inner {
+                width: 98%;
+            }
+            .task-mode {
+                margin-top: 90px;
+            }
+            .notice-title {
+                font-size: 19px;
+            }
+            .notice-list {
+                padding-left: 16px;
+                font-size: 13.5px;
+            }
+            .rule-box {
+                padding: 14px;
+                margin: 15px 0;
+            }
+            .likert-scale {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .likert-option {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 13.5px;
+                text-align: left;
+                width: 100%;
+            }
+            .likert-option input {
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 上部固定タイマー -->
+<div id="fixed-timer-header" class="fixed-header">
+    <div class="timer-inner">
+        <div>
+            <span id="question-num" class="question-num-badge">第 1 問</span>
+            <span id="phase-label" class="phase-badge">ステップ1：初期回答（自力での回答）</span>
+        </div>
+        <div class="timer-container">
+            <div id="bar" class="timer-bar"></div>
+        </div>
+        <div id="timer-label" class="time-text">残り時間: 60.0 秒</div>
+    </div>
+</div>
+
+<div id="main-container" class="container">
+    
+    <!-- 注意事項ページ -->
+    <div id="notice-page">
+        <div class="notice-title">実験に関する注意事項</div>
+        <ul class="notice-list">
+            <li>本実験は、制限時間の違いが論理的思考問題の認識・判断精度に与える影響を測定する学術実験です。</li>
+            <li>タスクは<strong>全3問＋アンケート</strong>です。全体の所要時間は5〜7分程度です。</li>
+            <li>問題への回答はインターネットなどで検索せず、<strong>ご自身の力でお答えください。</strong></li>
+            <li>実験中はブラウザの「戻る」ボタンや「再読み込み（リロード）」は絶対に押さないでください。</li>
+            <li>収集された回答データはすべて匿名化され、個人が特定される形で利用されることはありません。</li>
+        </ul>
+
+        <div class="rule-box">
+            <h3>⚠️ 【超重要】実験の進行ルール</h3>
+            画面上部にタイマーが表示され、各問題は以下の流れで進行します。
+            
+            <div class="step-timeline">
+                <strong>● 【ステップ1】 初期回答（自力で回答） ➔ <span class="step-highlight">【 制限時間：60秒 】</span></strong><br>
+                 ・問題文を読み、A〜Dを選択して「確定してAIヒントへ進む」を押してください。<br>
+                 <br>
+                 ⬇️（ボタンを押す、または60秒経過でステップ2へ）<br>
+                 <br>
+                <strong>● 【ステップ2】 AIヒント閲覧 ＋ 最終回答 ➔ <span class="step-highlight">【 制限時間：30秒 】</span></strong><br>
+                 ・問題の下部に「AIの分析ヒント」が表示されます。<br>
+                 ・ヒントを参考に改めてA〜Dを選択し、「確定して次の問題へ進む」を押してください。<br>
+                 ※各ステップとも回答を選択しないと進めません。
+            </div>
+
+            <div class="danger-alert">
+                🚨 【注意点】 各ステップで制限時間が終了すると強制的に次に進みます。時間切れにご注意ください。
+            </div>
+
+            <div class="trigger-alert">
+                ※「同意して実験を開始する」を押すと、すぐに第1問のカウントダウンが始まります。
+            </div>
+        </div>
+
+        <button class="start-btn" onclick="startExperiment()">同意して実験を開始する</button>
+    </div>
+
+    <!-- 実験タスク画面 -->
+    <div id="experiment-content">
+        <div class="experiment-layout">
+            
+            <!-- 問題表示エリア -->
+            <div class="question-box">
+                <p id="question-text-area" class="question-text"></p>
+                <img id="question-img-area" src="" alt="問題画像" class="question-image" style="display: none;">
+            </div>
+
+            <!-- ステップ1 回答エリア -->
+            <div id="step1-section">
+                <p style="font-size: 14px; font-weight: bold; color: #555; margin-bottom: 8px;">【ステップ1】ご自身の力で回答を選択してください：</p>
+                <div class="btn-grid">
+                    <button class="choice-btn step1-btn" onclick="selectFirst('A', this)">A</button>
+                    <button class="choice-btn step1-btn" onclick="selectFirst('B', this)">B</button>
+                    <button class="choice-btn step1-btn" onclick="selectFirst('C', this)">C</button>
+                    <button class="choice-btn step1-btn" onclick="selectFirst('D', this)">D</button>
+                </div>
+                <button id="step1-submit-btn" class="action-btn" onclick="confirmStep1()" disabled>回答を選択してください</button>
+            </div>
+
+            <!-- ステップ2 AI解説＆最終回答エリア -->
+            <div id="ai-section">
+                <p class="ai-title">🤖 AIによるリアルタイム分析ヒント (確信度: 88%)</p>
+                <p id="ai-text-area" class="ai-text"></p>
+                
+                <hr style="border: 0; border-top: 1px solid #ffcccc; margin: 15px 0;">
+
+                <p style="font-size: 14px; font-weight: bold; color: #333; margin: 0 0 8px 0;">【ステップ2】最終回答を選択してください：</p>
+                <div class="btn-grid">
+                    <button class="choice-btn final-btn" onclick="selectFinal('A', this)">A</button>
+                    <button class="choice-btn final-btn" onclick="selectFinal('B', this)">B</button>
+                    <button class="choice-btn final-btn" onclick="selectFinal('C', this)">C</button>
+                    <button class="choice-btn final-btn" onclick="selectFinal('D', this)">D</button>
+                </div>
+
+                <button id="submit-btn" class="action-btn" onclick="nextQuestion()" disabled>最終回答を選択してください</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 事後アンケート画面 -->
+    <div id="survey-page">
+        <div class="survey-title">事後アンケート</div>
+        <p style="font-size: 14px; color: #666; margin-bottom: 15px;">
+            回答中の意識およびご自身の属性について該当するものを選択してください。
+        </p>
+
+        <form id="survey-form">
+            <div class="survey-group">
+                <label class="survey-label">Q1. 実験中、時間的な焦りや負担を感じましたか？</label>
+                <div class="likert-scale">
+                    <div class="likert-option"><label><input type="radio" name="q1" value="1" required> 全く感じなかった</label></div>
+                    <div class="likert-option"><label><input type="radio" name="q1" value="2"> あまり感じなかった</label></div>
+                    <div class="likert-option"><label><input type="radio" name="q1" value="3"> どちらとも言えない</label></div>
+                    <div class="likert-option"><label><input type="radio" name="q1" value="4"> やや感じた</label></div>
+                    <div class="likert-option"><label><input type="radio" name="q1" value="5"> 強く感じた</label></div>
+                </div>
+            </div>
+
+            <div class="survey-group">
+                <label class="survey-label">Q2. 提示されたAIの分析ヒントや解説を、どの程度信頼・参考にしましたか？</label>
+                <div class="likert-scale">
+                    <div class="likert-option"><label><input type="radio" name="q2" value="1" required> 全く参考にしなかった</label></div>
+                    <div class="likert-option"><label><input type="radio" name="q2" value="2"> あまり参考にしなかった</label></div>
+                    <div class="likert-option"><label><input type="radio" name="q2" value="3"> どちらとも言えない</label></div>
+                    <div class="likert-option"><label><input type="radio" name="q2" value="4"> ある程度参考にした</label></div>
+                    <div class="likert-option"><label><input type="radio" name="q2" value="5"> 強く参考にした</label></div>
+                </div>
+            </div>
+
+            <div class="survey-group">
+                <label class="survey-label">Q3. 日常の生活や課題・業務でAI（ChatGPT, Gemini等）をどのくらいの頻度で利用していますか？</label>
+                <div class="likert-scale">
+                    <div class="likert-option"><label><input type="radio" name="q3" value="1" required> ほぼ使わない/全く使わない</label></div>
+                    <div class="likert-option"><label><input type="radio" name="q3" value="2"> 月1〜3回程度</label></div>
+                    <div class="likert-option"><label><input type="radio" name="q3" value="3"> 週1回程度</label></div>
+                    <div class="likert-option"><label><input type="radio" name="q3" value="4"> 週2〜3回程度</label></div>
+                    <div class="likert-option"><label><input type="radio" name="q3" value="5"> ほぼ毎日</label></div>
+                </div>
+            </div>
+
+            <div class="survey-group">
+                <label class="survey-label">Q4. 日頃から、AI（ChatGPT, Gemini等）が出力する情報や回答をどの程度信頼していますか？</label>
+                <div class="likert-scale">
+                    <div class="likert-option"><label><input type="radio" name="q4" value="1" required> 全く信頼していない</label></div>
+                    <div class="likert-option"><label><input type="radio" name="q4" value="2"> あまり信頼していない</label></div>
+                    <div class="likert-option"><label><input type="radio" name="q4" value="3"> どちらとも言えない</label></div>
+                    <div class="likert-option"><label><input type="radio" name="q4" value="4"> ある程度信頼している</label></div>
+                    <div class="likert-option"><label><input type="radio" name="q4" value="5"> 非常に信頼している</label></div>
+                </div>
+            </div>
+
+            <div class="survey-group">
+                <label class="survey-label">Q5. 回答時に意識したことや、AIのヒントに対する感想があれば自由にご記入ください（任意）：</label>
+                <textarea name="q5" class="survey-textarea" placeholder="例：時間制限が短かったためAIの意見をそのまま信じてしまった、など"></textarea>
+            </div>
+
+            <div class="survey-group">
+                <label class="survey-label">Q6. 性別をお答えください：</label>
+                <div class="radio-inline-group">
+                    <label class="radio-inline-label"><input type="radio" name="gender" value="男性" required> 男性</label>
+                    <label class="radio-inline-label"><input type="radio" name="gender" value="女性"> 女性</label>
+                    <label class="radio-inline-label"><input type="radio" name="gender" value="その他・回答しない"> その他・回答しない</label>
+                </div>
+            </div>
+
+            <div class="survey-group">
+                <label class="survey-label">Q7. 年代をお答えください：</label>
+                <div class="radio-inline-group">
+                    <label class="radio-inline-label"><input type="radio" name="age" value="10代" required> 10代</label>
+                    <label class="radio-inline-label"><input type="radio" name="age" value="20代"> 20代</label>
+                    <label class="radio-inline-label"><input type="radio" name="age" value="30代"> 30代</label>
+                    <label class="radio-inline-label"><input type="radio" name="age" value="40代"> 40代</label>
+                    <label class="radio-inline-label"><input type="radio" name="age" value="50代"> 50代</label>
+                    <label class="radio-inline-label"><input type="radio" name="age" value="60代以上"> 60代以上</label>
+                </div>
+            </div>
+
+            <button type="button" class="start-btn" onclick="submitSurveyAndFinish()">アンケートを送信して実験を完了する</button>
+        </form>
+    </div>
+
+    <!-- 実験完了画面 -->
+    <div id="finish-page">
+        <div class="finish-title">💡 実験完了</div>
+        <p style="font-size: 15px; color: #333;">すべての回答およびアンケートデータが正常に送信・記録されました。</p>
+
+        <!-- ディブリーフィング（開示説明） -->
+        <div class="debriefing-box">
+            <div class="debriefing-title">ℹ️ 実験に関する重要な説明</div>
+            本実験で提示された<strong>「AIによるリアルタイム分析ヒント」の回答および解説は、すべて意図的に作成された誤った内容（誤答）</strong>です。<br><br>
+            この実験は「制限時間や認知的な負荷の違いによって、人間がAIの誤った情報（誤答）をどの程度過信・盲従してしまうか」を検証する目的で実施されたものです。<br>
+            提示された回答および解説は実際の正解とはすべて異なっておりましたので、あらかじめご了承ください。ご協力誠にありがとうございました。
+        </div>
+
+        <p class="finish-text" style="margin-top: 20px; font-size: 14px;">
+            <strong>このままブラウザのタブまたはウィンドウを閉じて終了してください。</strong>
+        </p>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            qText: `【第1問】ある規則に従って図形が変化しています。<br>[？] に入る最も適切な図形をA～Dから1つ選んでください。`,
+            imgSrc: "question2.png", 
+            aiText: `<strong>AIによると<span style="color: red;">A</span>が最も論理的な正解といえます。</strong><br>
+            この問題は、丸の「位置の入れ替わり」の法則です。1コマ目と2コマ目、3コマ目と4コマ目を比べると、白丸と黒丸の位置が交互に変わっています。そのため、5コマ目は2コマ目と同じように「上が白、下が黒」の縦並びになります。したがって、この条件に当てはまる A が正解となります。`
+        },
+        {
+            qText: `【第2問】池にスイレンの葉が浮かんでいます。葉の面積は毎日倍になります。<br>葉が池をおおい尽くすには48日かかりました。では、池の半分をおおうまでに、何日かかるでしょうか。<br>
+ A：24日 B：26日 C：46日 D：47日`,
+            imgSrc: "", 
+            aiText: `<strong>AIによると<span style="color: red;">A (24日)</span>が最も論理的な正解といえます。</strong><br>
+            「全体で48日」かかるため、その半分である「池の半分（50%）」を覆う日数は単純に半分に割って「48 ÷ 2 = 24日」となります。全体にかかる日数のちょうど半分で全体の半分を覆うことになるため、24日 が正解となります。`
+        },
+        {
+            qText: `【第3問】次郎の成績は、クラスで上から15番目、下から15番目でした。このクラスの人数は何人でしょうか？<br>
+ A：28人 B：29人 C：30人 D：31人`,
+            imgSrc: "", 
+            aiText: `<strong>AIによると<span style="color: red;">C (30人)</span>が最も論理的な正解といえます。</strong><br>
+            上から数えて15人、下から数えて15人いるため、クラスの人数は素直に足し算をして「15 ＋ 15 ＝ 30人」となります。上からのグループと下からのグループをそのまま合わせることで全員が含まれるため、直感通り 30人 が正解となります。`
+        }
+    ];
+
+    let currentQuestionIndex = 0; 
+    let currentPhase = 1;         
+    const step1LimitTime = 60.0;  // ステップ1：60秒
+    const step2LimitTime = 30.0;  // ステップ2：30秒
+
+    let timeLeft;
+    let totalTime;
+    let timerInterval;
+    let allExperimentResults = [];
+    let currentLog = {};
+
+    function startExperiment() {
+        document.getElementById('notice-page').style.display = 'none';
+        document.getElementById('experiment-content').style.display = 'block';
+        document.getElementById('fixed-timer-header').style.display = 'block';
+        document.getElementById('main-container').classList.add('task-mode');
+
+        loadQuestion(currentQuestionIndex);
+    }
+
+    function loadQuestion(index) {
+        currentPhase = 1;
+
+        currentLog = {
+            questionNumber: index + 1,
+            firstChoice: "Timeout",
+            finalChoice: "Timeout",
+            timeTakenToFirst: null,
+            timeTakenToFinal: null
+        };
+
+        document.getElementById('question-num').innerText = `第 ${index + 1} 問`;
+        document.getElementById('phase-label').innerText = "ステップ1：初期回答（自力での回答）";
+        document.getElementById('phase-label').style.backgroundColor = "#333";
+        
+        document.getElementById('question-text-area').innerHTML = questions[index].qText;
+        
+        const imgArea = document.getElementById('question-img-area');
+        if (questions[index].imgSrc) {
+            imgArea.src = questions[index].imgSrc;
+            imgArea.style.display = 'block';
+        } else {
+            imgArea.style.display = 'none';
+        }
+
+        document.getElementById('ai-text-area').innerHTML = questions[index].aiText;
+
+        resetButtons();
+
+        window.scrollTo(0, 0);
+
+        timeLeft = step1LimitTime;
+        totalTime = step1LimitTime;
+        startTimer();
+    }
+
+    function resetButtons() {
+        document.getElementById('ai-section').style.display = 'none';
+
+        const allButtons = document.querySelectorAll('.choice-btn');
+        allButtons.forEach(btn => {
+            btn.disabled = false;
+            btn.classList.remove('selected');
+        });
+
+        const step1Btn = document.getElementById('step1-submit-btn');
+        step1Btn.disabled = true;
+        step1Btn.innerText = "回答を選択してください";
+
+        const submitBtn = document.getElementById('submit-btn');
+        submitBtn.disabled = true;
+        submitBtn.innerText = "最終回答を選択してください";
+    }
+
+    function startTimer() {
+        const bar = document.getElementById('bar');
+        const label = document.getElementById('timer-label');
+        
+        timerInterval = setInterval(() => {
+            timeLeft -= 0.1;
+            if (timeLeft <= 0) {
+                timeLeft = 0;
+                clearInterval(timerInterval);
+                handleTimeout();
+            }
+            const percentage = (timeLeft / totalTime) * 100;
+            bar.style.width = percentage + '%';
+            label.innerText = `残り時間: ${timeLeft.toFixed(1)} 秒`;
+        }, 100);
+    }
+
+    function handleTimeout() {
+        if (currentPhase === 1) {
+            currentLog.timeTakenToFirst = step1LimitTime.toFixed(2);
+            disableStep1Buttons();
+            goToStep2();
+        } else if (currentPhase === 2) {
+            currentLog.timeTakenToFinal = step2LimitTime.toFixed(2);
+            nextQuestion(); 
+        }
+    }
+
+    function selectFirst(choice, clickedBtn) {
+        if (currentPhase !== 1) return;
+
+        currentLog.firstChoice = choice;
+
+        const buttons = document.querySelectorAll('.step1-btn');
+        buttons.forEach(b => b.classList.remove('selected'));
+        clickedBtn.classList.add('selected');
+
+        const step1Btn = document.getElementById('step1-submit-btn');
+        step1Btn.disabled = false;
+        step1Btn.innerText = "確定してAIヒントへ進む";
+    }
+
+    function confirmStep1() {
+        if (currentPhase !== 1 || currentLog.firstChoice === "Timeout") return;
+
+        currentLog.timeTakenToFirst = (totalTime - timeLeft).toFixed(2);
+        disableStep1Buttons();
+
+        clearInterval(timerInterval);
+        goToStep2();
+    }
+
+    function disableStep1Buttons() {
+        const buttons = document.querySelectorAll('.step1-btn');
+        buttons.forEach(btn => btn.disabled = true);
+        document.getElementById('step1-submit-btn').disabled = true;
+    }
+
+    function goToStep2() {
+        currentPhase = 2;
+        
+        document.getElementById('phase-label').innerText = "ステップ2：AI閲覧＋最終回答";
+        document.getElementById('phase-label').style.backgroundColor = "#d93838";
+        
+        document.getElementById('ai-section').style.display = 'block';
+
+        document.getElementById('ai-section').scrollIntoView({ behavior: 'smooth' });
+
+        timeLeft = step2LimitTime;
+        totalTime = step2LimitTime;
+        startTimer();
+    }
+
+    function selectFinal(choice, clickedBtn) {
+        if (currentPhase !== 2) return;
+
+        currentLog.finalChoice = choice;
+
+        const buttons = document.querySelectorAll('.final-btn');
+        buttons.forEach(b => b.classList.remove('selected'));
+        clickedBtn.classList.add('selected');
+
+        const submitBtn = document.getElementById('submit-btn');
+        submitBtn.disabled = false;
+        
+        if (currentQuestionIndex === questions.length - 1) {
+            submitBtn.innerText = "最終回答を確定してアンケートへ進む";
+        } else {
+            submitBtn.innerText = "確定して次の問題へ進む";
+        }
+    }
+
+    function nextQuestion() {
+        if (currentPhase === 2 && currentLog.finalChoice === "Timeout" && timeLeft > 0) {
+            alert("最終回答（A〜D）を選択してください。");
+            return;
+        }
+
+        clearInterval(timerInterval);
+
+        if (currentLog.timeTakenToFinal === null) {
+            currentLog.timeTakenToFinal = (totalTime - timeLeft).toFixed(2);
+        }
+
+        allExperimentResults.push(currentLog);
+
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex++;
+            loadQuestion(currentQuestionIndex);
+        } else {
+            showSurveyPage();
+        }
+    }
+
+    function showSurveyPage() {
+        document.getElementById('experiment-content').style.display = 'none';
+        document.getElementById('fixed-timer-header').style.display = 'none';
+        document.getElementById('main-container').classList.remove('task-mode');
+        
+        document.getElementById('survey-page').style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+
+    function submitSurveyAndFinish() {
+        const form = document.getElementById('survey-form');
+        
+        if (!form.q1.value || !form.q2.value || !form.q3.value || !form.q4.value || !form.gender.value || !form.age.value) {
+            alert("アンケートの必須項目にすべて回答してください。");
+            return;
+        }
+
+        const surveyData = {
+            q1: form.q1.value,
+            q2: form.q2.value,
+            q3: form.q3.value,
+            q4: form.q4.value,
+            q5: form.q5 ? form.q5.value : "",
+            gender: form.gender.value,
+            age: form.age.value
+        };
+
+        sendDataToGoogleForm(surveyData);
+    }
+
+    function sendDataToGoogleForm(surveyData) {
+        document.getElementById('survey-page').style.display = 'none';
+        
+        const finishPage = document.getElementById('finish-page');
+        finishPage.style.display = 'block';
+
+        const formUrl = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSfltNNjgGQpmeTOprcIxhgj41NfYTxrmBeMlG2OIiB_IqPxKQ/formResponse";
+        const formData = new FormData();
+
+        // 【第1問データ】
+        formData.append("entry.1703594034", String(allExperimentResults[0].firstChoice));       // 1: 第1問・最初選択
+        formData.append("entry.1775691249", String(allExperimentResults[0].timeTakenToFirst));  // 2: 第1問・最初時間
+        formData.append("entry.364444395", String(allExperimentResults[0].finalChoice));       // 3: 第1問・最終選択
+        formData.append("entry.1931666000", String(allExperimentResults[0].timeTakenToFinal));  // 4: 第1問・最終時間
+
+        // 【第2問データ】
+        formData.append("entry.1438255224", String(allExperimentResults[1].firstChoice));       // 5: 第2問・最初選択
+        formData.append("entry.1746735608", String(allExperimentResults[1].timeTakenToFirst));  // 6: 第2問・最初時間
+        formData.append("entry.561772366", String(allExperimentResults[1].finalChoice));       // 7: 第2問・最終選択
+        formData.append("entry.1082736057", String(allExperimentResults[1].timeTakenToFinal));  // 8: 第2問・最終時間
+
+        // 【第3問データ】
+        formData.append("entry.156871651", String(allExperimentResults[2].firstChoice));        // 9: 第3問・最初選択
+        formData.append("entry.1290028566", String(allExperimentResults[2].timeTakenToFirst));  // 10: 第3問・最初時間
+        formData.append("entry.511438494", String(allExperimentResults[2].finalChoice));       // 11: 第3問・最終選択
+        formData.append("entry.1081875226", String(allExperimentResults[2].timeTakenToFinal));  // 12: 第3問・最終時間
+
+        // 【事後アンケートデータ】
+        formData.append("entry.936719496", String(surveyData.q1));      // 13: Q1 (焦り・負担)
+        formData.append("entry.1010106696", String(surveyData.q2));     // 14: Q2 (AIヒントの信頼)
+        formData.append("entry.806688180", String(surveyData.q3));      // 15: Q3 (日常での利用頻度)
+        formData.append("entry.2068974292", String(surveyData.q4));     // 16: Q4 (日常での信頼度)
+        formData.append("entry.1303222963", String(surveyData.q5 || "")); // 17: Q5 (自由記述)
+        formData.append("entry.55984102", String(surveyData.gender));   // 18: 性別
+        formData.append("entry.410265648", String(surveyData.age));      // 19: 年代
+
+        fetch(formUrl, {
+            method: "POST",
+            body: formData,
+            mode: "no-cors"
+        }).catch((error) => {
+            console.error("Error sending data:", error);
+        });
+    }
+</script>
+</body>
+</html>
