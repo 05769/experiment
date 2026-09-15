@@ -891,18 +891,22 @@
     function submitSurveyAndFinish() {
         const form = document.getElementById('survey-form');
         
-        // アンケート必須チェック（Q1〜Q3, Q5, Q6）
-        if (!form.q1.value || !form.q2.value || !form.q3.value || !form.gender.value || !form.age.value) {
+        // アンケート必須チェック
+        if (!form.q1.value || !form.q2_1.value || !form.q2_2.value || !form.q2_3.value || 
+            !form.q3.value || !form.q4.value || !form.q5.value || !form.gender.value || !form.age.value) {
             alert("アンケートの必須項目にすべて回答してください。");
             return;
         }
 
         const surveyData = {
             q1: form.q1.value,
-            q2: form.q2.value,
-            q3: form.q3.value,
-            q4: form.q4.value,
-            q5: form.q5 ? form.q5.value : "",
+            q2_1: form.q2_1.value,
+            q2_2: form.q2_2.value,
+            q2_3: form.q2_3.value,
+            q3: form.q3.value,           // Q3 (AIヒントの信頼度)
+            q4: form.q4.value,           // Q4 (日常での利用頻度)
+            q5: form.q5.value,           // Q5 (日常での信頼度)
+            q6: form.q6 ? form.q6.value : "", // Q6 (自由記述)
             gender: form.gender.value,
             age: form.age.value
         };
@@ -919,16 +923,16 @@
         const formUrl = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSduN1Nw6iAKx6yqQlEXjuzd-WTh_hWft1lUDU39MsjE3ukjdA/formResponse";
         const formData = new FormData();
 
-// 【第1問データ】
+        // 【第1問データ】
         formData.append("entry.1703594034", String(allExperimentResults[0].firstChoice));       // 1: 第1問・最初選択
         formData.append("entry.1775691249", String(allExperimentResults[0].timeTakenToFirst));  // 2: 第1問・最初時間
-        formData.append("entry.364444395", String(allExperimentResults[0].finalChoice));       // 3: 第1問・最終選択
+        formData.append("entry.364444395", String(allExperimentResults[0].finalChoice));        // 3: 第1問・最終選択
         formData.append("entry.1931666000", String(allExperimentResults[0].timeTakenToFinal));  // 4: 第1問・最終時間
 
         // 【第2問データ】
         formData.append("entry.1438255224", String(allExperimentResults[1].firstChoice));       // 5: 第2問・最初選択
         formData.append("entry.1746735608", String(allExperimentResults[1].timeTakenToFirst));  // 6: 第2問・最初時間
-        formData.append("entry.561772366", String(allExperimentResults[1].finalChoice));       // 7: 第2問・最終選択
+        formData.append("entry.561772366", String(allExperimentResults[1].finalChoice));        // 7: 第2問・最終選択
         formData.append("entry.1082736057", String(allExperimentResults[1].timeTakenToFinal));  // 8: 第2問・最終時間
 
         // 【第3問データ】
@@ -938,13 +942,18 @@
         formData.append("entry.1081875226", String(allExperimentResults[2].timeTakenToFinal));  // 12: 第3問・最終時間
 
         // 【事後アンケートデータ】
-        formData.append("entry.936719496", String(surveyData.q1));      // 13: Q1 (焦り・負担)
-        formData.append("entry.1010106696", String(surveyData.q2));     // 14: Q2 (AIヒントの信頼)
-        formData.append("entry.806688180", String(surveyData.q3));      // 15: Q3 (日常での利用頻度)
-        formData.append("entry.2068974292", String(surveyData.q4));     // 16: Q4 (日常での信頼度)
-        formData.append("entry.1303222963", String(surveyData.q5 || "")); // 17: Q5 (自由記述)
-        formData.append("entry.55984102", String(surveyData.gender));   // 18: 性別
-        formData.append("entry.410265648", String(surveyData.age));      // 19: 年代
+        formData.append("entry.936719496", String(surveyData.q1));        // 13: Q1 (焦り・負担)
+        formData.append("entry.397621545", String(surveyData.q2_1));      // 14: Q2-1 (第1問の自信度)
+        formData.append("entry.29829332", String(surveyData.q2_2));       // 15: Q2-2 (第2問の自信度)
+        formData.append("entry.1218634760", String(surveyData.q2_3));     // 16: Q2-3 (第3問の自信度)
+
+        // ↓↓↓ ここを修正（surveyData.q3〜q6 に変更） ↓↓↓
+        formData.append("entry.1010106696", String(surveyData.q3));      // 17: Q3 (AIヒントの信頼)
+        formData.append("entry.806688180", String(surveyData.q4));       // 18: Q4 (日常での利用頻度)
+        formData.append("entry.2068974292", String(surveyData.q5));      // 19: Q5 (日常での信頼度)
+        formData.append("entry.1303222963", String(surveyData.q6 || "")); // 20: Q6 (自由記述)
+        formData.append("entry.55984102", String(surveyData.gender));    // 21: 性別
+        formData.append("entry.410265648", String(surveyData.age));       // 22: 年代
 
         fetch(formUrl, {
             method: "POST",
