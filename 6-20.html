@@ -540,7 +540,42 @@
         </div>
 
         <div class="survey-group">
-            <label class="survey-label">Q2. 提示されたAIの分析ヒントや解説を、どの程度信頼・参考にしましたか？</label>
+            <label class="survey-label">Q2. 各問題について、AIの解説を見る前に自分で選択した回答に、どの程度自信がありましたか？</label>
+            
+            <!-- 第1問 -->
+            <p style="font-size: 12px; font-weight: bold; margin: 12px 0 6px 0;">【第1問（図形配置問題）】</p>
+            <div class="likert-scale">
+                <div class="likert-option"><label><input type="radio" name="q2_1" value="1" required> 全く自信がなかった</label></div>
+                <div class="likert-option"><label><input type="radio" name="q2_1" value="2"> あまり自信がなかった</label></div>
+                <div class="likert-option"><label><input type="radio" name="q2_1" value="3"> どちらともいえない</label></div>
+                <div class="likert-option"><label><input type="radio" name="q2_1" value="4"> ある程度自信があった</label></div>
+                <div class="likert-option"><label><input type="radio" name="q2_1" value="5"> とても自信があった</label></div>
+            </div>
+
+            <!-- 第2問 -->
+            <p style="font-size: 12px; font-weight: bold; margin: 12px 0 6px 0;">【第2問（スイレンの問題）】</p>
+            <div class="likert-scale">
+                <div class="likert-option"><label><input type="radio" name="q2_2" value="1" required> 全く自信がなかった</label></div>
+                <div class="likert-option"><label><input type="radio" name="q2_2" value="2"> あまり自信がなかった</label></div>
+                <div class="likert-option"><label><input type="radio" name="q2_2" value="3"> どちらともいえない</label></div>
+                <div class="likert-option"><label><input type="radio" name="q2_2" value="4"> ある程度自信があった</label></div>
+                <div class="likert-option"><label><input type="radio" name="q2_2" value="5"> とても自信があった</label></div>
+            </div>
+
+            <!-- 第3問 -->
+            <p style="font-size: 12px; font-weight: bold; margin: 12px 0 6px 0;">【第3問（クラス人数の問題）】</p>
+            <div class="likert-scale">
+                <div class="likert-option"><label><input type="radio" name="q2_3" value="1" required> 全く自信がなかった</label></div>
+                <div class="likert-option"><label><input type="radio" name="q2_3" value="2"> あまり自信がなかった</label></div>
+                <div class="likert-option"><label><input type="radio" name="q2_3" value="3"> どちらともいえない</label></div>
+                <div class="likert-option"><label><input type="radio" name="q2_3" value="4"> ある程度自信があった</label></div>
+                <div class="likert-option"><label><input type="radio" name="q2_3" value="5"> とても自信があった</label></div>
+            </div>
+        </div>
+
+
+        <div class="survey-group">
+            <label class="survey-label">Q3. 提示されたAIの分析ヒントや解説を、どの程度信頼・参考にしましたか？</label>
             <div class="likert-scale">
                 <div class="likert-option"><label><input type="radio" name="q2" value="1" required> 全く参考にしなかった</label></div>
                 <div class="likert-option"><label><input type="radio" name="q2" value="2"> あまり参考にしなかった</label></div>
@@ -552,7 +587,7 @@
 
         <!-- 尺度を1（低）→5（高）に統一 -->
         <div class="survey-group">
-            <label class="survey-label">Q3. 日常の生活や課題・業務でAI（ChatGPT, Gemini等）をどのくらいの頻度で利用していますか？</label>
+            <label class="survey-label">Q4. 日常の生活や課題・業務でAI（ChatGPT, Gemini等）をどのくらいの頻度で利用していますか？</label>
             <div class="likert-scale">
                 <div class="likert-option"><label><input type="radio" name="q3" value="1" required> ほぼ使わない/全く使わない</label></div>
                 <div class="likert-option"><label><input type="radio" name="q3" value="2"> 月1〜3回程度</label></div>
@@ -563,7 +598,7 @@
         </div>
 
         <div class="survey-group">
-            <label class="survey-label">Q4. 日頃から、AI（ChatGPT, Gemini等）が出力する情報や回答をどの程度信頼していますか？</label>
+            <label class="survey-label">Q5. 日頃から、AI（ChatGPT, Gemini等）が出力する情報や回答をどの程度信頼していますか？</label>
             <div class="likert-scale">
                 <div class="likert-option"><label><input type="radio" name="q4" value="1" required> 全く信頼していない</label></div>
                 <div class="likert-option"><label><input type="radio" name="q4" value="2"> あまり信頼していない</label></div>
@@ -574,12 +609,12 @@
         </div>
 
         <div class="survey-group">
-            <label class="survey-label">Q5. 回答時に意識したことや、AIのヒントに対する感想があれば自由にご記入ください（任意）：</label>
+            <label class="survey-label">Q6. 回答時に意識したことや、AIのヒントに対する感想があれば自由にご記入ください（任意）：</label>
             <textarea name="q5" class="survey-textarea" placeholder="例：時間制限が短かったためAIの意見をそのまま信じてしまった、など"></textarea>
         </div>
 
         <div class="survey-group">
-            <label class="survey-label">Q6. 性別をお答えください：</label>
+            <label class="survey-label">Q7. 性別をお答えください：</label>
             <div class="radio-inline-group">
                 <label class="radio-inline-label"><input type="radio" name="gender" value="男性" required> 男性</label>
                 <label class="radio-inline-label"><input type="radio" name="gender" value="女性"> 女性</label>
@@ -588,7 +623,7 @@
         </div>
 
         <div class="survey-group">
-            <label class="survey-label">Q7. 年代をお答えください：</label>
+            <label class="survey-label">Q8. 年代をお答えください：</label>
             <div class="radio-inline-group">
                 <label class="radio-inline-label"><input type="radio" name="age" value="10代" required> 10代</label>
                 <label class="radio-inline-label"><input type="radio" name="age" value="20代"> 20代</label>
