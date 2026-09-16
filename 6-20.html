@@ -442,7 +442,7 @@
     <div id="notice-page">
         <div class="notice-title">実験に関する注意事項</div>
         <ul class="notice-list">
-            <li>本実験は、制限時間の違いが論理的思考問題の認識・判断精度に与える影響を測定する学術実験です。</li>
+            <li>本実験は、制限時間の違いが問題への回答や判断に与える影響を測定する学術実験です。</li>
             <li>タスクは<strong>全3問＋アンケート</strong>です。全体の所要時間は3〜5分程度です。</li>
             <li>問題への回答はインターネットなどで検索せず、<strong>ご自身の力でお答えください。</strong></li>
             <li>実験中はブラウザの「戻る」ボタンや「再読み込み（リロード）」は絶対に押さないでください。</li>
@@ -459,7 +459,7 @@
                  <br>
                 ⬇️（ボタンを押す、または20秒経過でステップ2へ）<br>
                  <br>
-                <strong>● 【ステップ2】 AIヒント閲覧 ＋ 最終回答 ➔ <span class="step-highlight">【 制限時間：20秒 】</span></strong><br>
+                <strong>● 【ステップ2】 AIヒント閲覧 ＋ 最終回答 ➔ <span class="step-highlight">【 制限時間：30秒 】</span></strong><br>
                  ・問題の下部に「AIの分析ヒント」が表示されます。<br>
                  ・ヒントを参考に改めてA〜Dを選択し、「確定して次の問題へ進む」を押してください。<br>
                  ※各ステップとも回答を選択しないと進めません。
@@ -501,7 +501,7 @@
 
             <!-- ステップ2 AI解説＆最終回答エリア（問題・ステップ1の下に配置） -->
             <div id="ai-section">
-                <p class="ai-title">🤖 AIによるリアルタイム分析ヒント (確信度: 88%)</p>
+                <p class="ai-title">🤖 AIによる分析ヒント </p>
                 <p id="ai-text-area" class="ai-text"></p>
                 
                 <hr style="border: 0; border-top: 1px solid #ffcccc; margin: 20px 0;">
@@ -540,7 +540,7 @@
         </div>
 
         <div class="survey-group">
-            <label class="survey-label">Q2. 各問題について、AIの解説を見る前に自分で選択した回答に、どの程度自信がありましたか？</label>
+            <label class="survey-label">Q2. 各問題について、<u>AIの解説を見る前に自分で選択した回答</u>に、どの程度自信がありましたか？</label>
             
             <!-- 第1問 -->
             <p style="font-size: 12px; font-weight: bold; margin: 12px 0 6px 0;">【第1問（図形配置問題）】</p>
@@ -587,7 +587,7 @@
 
         <!-- 尺度を1（低）→5（高）に統一 -->
         <div class="survey-group">
-            <label class="survey-label">Q4. 日常の生活や課題・業務でAI（ChatGPT, Gemini等）をどのくらいの頻度で利用していますか？</label>
+            <label class="survey-label">Q4. 日常の生活や課題・業務で生成AI（ChatGPT, Gemini等）をどのくらいの頻度で利用していますか？</label>
             <div class="likert-scale">
                 <div class="likert-option"><label><input type="radio" name="q4" value="1" required> ほぼ使わない/全く使わない</label></div>
                 <div class="likert-option"><label><input type="radio" name="q4" value="2"> 月1〜3回程度</label></div>
@@ -641,14 +641,13 @@
     <!-- 実験完了画面 -->
     <div id="finish-page">
         <div class="finish-title">💡 実験完了</div>
-        <p style="font-size: 15px; color: #333;">すべての回答およびアンケートデータが正常に送信・記録されました。</p>
+        <p style="font-size: 15px; color: #333;">回答を送信しました。</p>
 
         <!-- ディブリーフィング（開示説明） -->
         <div class="debriefing-box">
-            <div class="debriefing-box">
     <div class="debriefing-title">ℹ️ 実験に関する重要な説明</div>
-    本実験で提示された<strong>「AIによるリアルタイム分析ヒント」の回答および解説は、すべて意図的に作成された誤った内容（誤答）</strong>です。<br><br>
-    この実験は「制限時間や認知的な負荷の違いによって、人間がAIの誤った情報（誤答）をどの程度過信・盲従してしまうか」を検証する目的で実施されたものです。<br>
+    本実験で提示された<strong>「AIによる分析ヒント」の回答および解説は、すべて意図的に作成された誤った内容</strong>です。<br>
+    この実験は「制限時間や認知的な負荷の違いによって、人間がAIの誤った情報をどの程度過信・盲従してしまうか」を検証する目的で実施されたものです。<br>
     提示された回答および解説は実際の正解とはすべて異なっておりましたので、あらかじめご了承ください。ご協力誠にありがとうございました。
 </div>
 
@@ -672,21 +671,21 @@
  　,
             imgSrc: "", 
             aiText: `<strong>AIによると<span style="color: red;">A (24日)</span>が最も論理的な正解といえます。</strong><br>
-            「「全体で48日」かかるため、その半分である「池の半分（50%）」を覆う日数は単純に半分に割って「48 ÷ 2 = 24日」となります。全体にかかる日数のちょうど半分で全体の半分を覆うことになるため、24日 が正解となります。`
+            「全体で48日」かかるため、その半分である「池の半分（50%）」を覆う日数は半分に割って「48 ÷ 2 = 24日」となります。全体にかかる日数のちょうど半分で全体の半分を覆うことになるため、24日 が正解となります。`
         },
         {
             qText: `【第3問】次郎の成績は、クラスで上から15番目、下から15番目でした。このクラスの人数は何人でしょうか？<br>
 　A：28人　B：29人　C：30人　D：31人`,
             imgSrc: "", 
             aiText: `<strong>AIによると<span style="color: red;">C (30人)</span>が最も論理的な正解といえます。</strong><br>
-            上から数えて15人、下から数えて15人いるため、クラスの人数は素直に足し算をして「15 ＋ 15 ＝ 30人」となります。上からのグループと下からのグループをそのまま合わせることで全員が含まれるため、直感通り 30人 が正解となります。`
+            上から数えて15人、下から数えて15人いるため、クラスの人数は足し算をして「15 ＋ 15 ＝ 30人」となります。上からのグループと下からのグループをそのまま合わせることで全員が含まれるため、 30人 が正解となります。`
         }
     ];
 
     let currentQuestionIndex = 0; 
     let currentPhase = 1;         
     const step1LimitTime = 20.0;  // ステップ1：20秒
-    const step2LimitTime = 20.0;  // ステップ2：20秒
+    const step2LimitTime = 30.0;  // ステップ2：30秒
 
     let timeLeft;
     let totalTime;
@@ -829,7 +828,7 @@
         document.getElementById('ai-section').style.display = 'block';
 
         // AI解説部分へスクロール
-        document.getElementById('ai-section').scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('ai-section').scrollIntoView({ behavior: 'instant' });
 
         timeLeft = step2LimitTime;
         totalTime = step2LimitTime;
