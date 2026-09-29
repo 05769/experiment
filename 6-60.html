@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>認知負荷とAI盲従に関する実験タスク</title>
+    <title>判断に関する実験タスク</title>
     <style>
     body {
         font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -442,31 +442,30 @@
     <div id="notice-page">
         <div class="notice-title">実験に関する注意事項</div>
         <ul class="notice-list">
-            <li>本実験は、制限時間の違いが問題への回答や判断に与える影響を測定する学術実験です。</li>
-            <li>タスクは<strong>全3問＋アンケート</strong>です。全体の所要時間は3〜5分程度です。</li>
+            <li>本実験は、問題への回答や意思決定における判断のプロセスについて調べるための学術研究です。</li>
+            <li>タスクは<strong>全3問＋アンケート</strong>です。全体の所要時間は5〜7分程度です。</li>
             <li>問題への回答はインターネットなどで検索せず、<strong>ご自身の力でお答えください。</strong></li>
             <li>実験中はブラウザの「戻る」ボタンや「再読み込み（リロード）」は絶対に押さないでください。</li>
             <li>収集された回答データはすべて匿名化され、個人が特定される形で利用されることはありません。</li>
         </ul>
 
         <div class="rule-box">
-            <h3>⚠️ 【超重要】実験の進行ルール</h3>
+            <h3>⚠️ 実験の進め方</h3>
             画面上部にタイマーが表示され、各問題は以下の流れで進行します。
             
             <div class="step-timeline">
-                <strong>● 【ステップ1】 初期回答（自力で回答） ➔ <span class="step-highlight">【 制限時間：60秒 】</span></strong><br>
+                <strong>● 【ステップ1】 初期回答（自力で回答）<span class="step-highlight">【 制限時間：60秒 】</span></strong><br>
                  ・問題文を読み、A〜Dを選択して「確定してAIヒントへ進む」を押してください。<br>
                  <br>
-                ⬇️（ボタンを押す、または60秒経過でステップ2へ）<br>
+                ⬇️（ボタンを押す、または60秒経過するとステップ2へ）<br>
                  <br>
-                <strong>● 【ステップ2】 AIヒント閲覧 ＋ 最終回答 ➔ <span class="step-highlight">【 制限時間：30秒 】</span></strong><br>
+                <strong>● 【ステップ2】 AIヒント閲覧 ＋ 最終回答<span class="step-highlight">【 制限時間：30秒 】</span></strong><br>
                  ・問題の下部に「AIの分析ヒント」が表示されます。<br>
-                 ・ヒントを参考に改めてA〜Dを選択し、「確定して次の問題へ進む」を押してください。<br>
-                 ※各ステップとも回答を選択しないと進めません。
+                 ・ヒントを参考に改めてA〜Dを選択し、「確定して次の問題へ進む」を押してください。
             </div>
 
             <div class="danger-alert">
-                🚨 【注意点】 各ステップで制限時間が終了すると強制的に次に進みます。時間切れにご注意ください。
+                🚨 【注意点】 各ステップで制限時間が終了すると、回答状況にかかわらず強制的に次に進みます。時間切れにご注意ください。
             </div>
 
             <div class="trigger-alert">
@@ -575,7 +574,7 @@
 
 
         <div class="survey-group">
-            <label class="survey-label">Q3. 提示されたAIの分析ヒントや解説を、どの程度信頼・参考にしましたか？</label>
+            <label class="survey-label">Q3. 提示されたAIの分析ヒントや解説を、どの程度参考にしましたか？</label>
             <div class="likert-scale">
                 <div class="likert-option"><label><input type="radio" name="q3" value="1" required> 全く参考にしなかった</label></div>
                 <div class="likert-option"><label><input type="radio" name="q3" value="2"> あまり参考にしなかった</label></div>
@@ -610,7 +609,7 @@
 
         <div class="survey-group">
             <label class="survey-label">Q6. 回答時に意識したことや、AIのヒントに対する感想があれば自由にご記入ください（任意）：</label>
-            <textarea name="q6" class="survey-textarea" placeholder="例：時間制限が短かったためAIの意見をそのまま信じてしまった、など"></textarea>
+            <textarea name="q6" class="survey-textarea"></textarea>
         </div>
 
         <div class="survey-group">
@@ -647,7 +646,7 @@
         <div class="debriefing-box">
     <div class="debriefing-title">ℹ️ 実験に関する重要な説明</div>
     本実験で提示された<strong>「AIによる分析ヒント」の回答および解説は、すべて意図的に作成された誤った内容</strong>です。<br>
-    この実験は「制限時間や認知的な負荷の違いによって、人間がAIの誤った情報をどの程度過信・盲従してしまうか」を検証する目的で実施されたものです。<br>
+    この実験は時間的制約の違いにより、人間がAIの誤った情報をどの程度過信・盲従してしまうかを検証する目的で実施されたものです。<br>
     提示された回答および解説は実際の正解とはすべて異なっておりましたので、あらかじめご了承ください。ご協力誠にありがとうございました。
 </div>
 
