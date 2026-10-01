@@ -418,6 +418,76 @@
         align-items: center;
         gap: 6px;
     }
+
+/* パソコン画面では文字を少し大きくする */
+@media (min-width: 768px) {
+    .notice-list {
+        font-size: 16px;
+    }
+
+    .rule-box {
+        font-size: 15px;
+    }
+
+    .step-timeline {
+        font-size: 15px;
+    }
+
+    .danger-alert {
+        font-size: 14px;
+    }
+
+    .trigger-alert {
+        font-size: 14px;
+    }
+
+    .question-text {
+        font-size: 17px;
+    }
+
+    .choice-btn {
+        font-size: 17px;
+    }
+
+    .action-btn {
+        font-size: 16px;
+    }
+
+    .ai-title {
+        font-size: 16px;
+    }
+
+    .ai-text {
+        font-size: 15px;
+    }
+
+    .survey-label {
+        font-size: 15px;
+    }
+
+    .likert-option {
+        font-size: 13px;
+    }
+
+    .radio-inline-label {
+        font-size: 15px;
+    }
+
+    .survey-textarea {
+        font-size: 15px;
+    }
+
+    .debriefing-box {
+        font-size: 15px;
+    }
+
+    .debriefing-title {
+        font-size: 16px;
+    }
+}
+
+
+
 </style>
 </head>
 <body>
@@ -538,11 +608,11 @@
             </div>
         </div>
 
+        <!-- Q2: 自信度 -->
         <div class="survey-group">
-            <label class="survey-label">Q2. 各問題について、<u>AIの解説を見る前に自分で選択した回答</u>に、どの程度自信がありましたか？</label>
+            <label class="survey-label">Q2. 各問題について、<u>AIの解説を見る前に自分で選択した回答</u>への自信度をお選びください。</label>
             
-            <!-- 第1問 -->
-            <p style="font-size: 12px; font-weight: bold; margin: 12px 0 6px 0;">【第1問（図形配置問題）】</p>
+            <p style="font-size: 13px; font-weight: bold; margin: 16px 0 6px 0;">【第1問：図形配置問題】</p>
             <div class="likert-scale">
                 <div class="likert-option"><label><input type="radio" name="q2_1" value="1" required> 全く自信がなかった</label></div>
                 <div class="likert-option"><label><input type="radio" name="q2_1" value="2"> あまり自信がなかった</label></div>
@@ -551,8 +621,7 @@
                 <div class="likert-option"><label><input type="radio" name="q2_1" value="5"> とても自信があった</label></div>
             </div>
 
-            <!-- 第2問 -->
-            <p style="font-size: 12px; font-weight: bold; margin: 12px 0 6px 0;">【第2問（スイレンの問題）】</p>
+            <p style="font-size: 13px; font-weight: bold; margin: 16px 0 6px 0;">【第2問：スイレンの問題】</p>
             <div class="likert-scale">
                 <div class="likert-option"><label><input type="radio" name="q2_2" value="1" required> 全く自信がなかった</label></div>
                 <div class="likert-option"><label><input type="radio" name="q2_2" value="2"> あまり自信がなかった</label></div>
@@ -561,8 +630,7 @@
                 <div class="likert-option"><label><input type="radio" name="q2_2" value="5"> とても自信があった</label></div>
             </div>
 
-            <!-- 第3問 -->
-            <p style="font-size: 12px; font-weight: bold; margin: 12px 0 6px 0;">【第3問（クラス人数の問題）】</p>
+            <p style="font-size: 13px; font-weight: bold; margin: 16px 0 6px 0;">【第3問：クラス人数の問題】</p>
             <div class="likert-scale">
                 <div class="likert-option"><label><input type="radio" name="q2_3" value="1" required> 全く自信がなかった</label></div>
                 <div class="likert-option"><label><input type="radio" name="q2_3" value="2"> あまり自信がなかった</label></div>
@@ -572,48 +640,74 @@
             </div>
         </div>
 
+        <!-- Q3: 事前知識（既視感） -->
+        <div class="survey-group">
+            <label class="survey-label">Q3. 各問題と同じ、または非常によく似た問題を、実験前に見たことがありましたか？</label>
+            
+            <p style="font-size: 13px; font-weight: bold; margin: 16px 0 6px 0;">【第1問：図形配置問題】</p>
+            <div class="radio-inline-group">
+                <label class="radio-inline-label"><input type="radio" name="q3_1" value="はい" required> はい</label>
+                <label class="radio-inline-label"><input type="radio" name="q3_1" value="いいえ"> いいえ</label>
+                <label class="radio-inline-label"><input type="radio" name="q3_1" value="わからない"> わからない</label>
+            </div>
+
+            <p style="font-size: 13px; font-weight: bold; margin: 16px 0 6px 0;">【第2問：スイレンの問題】</p>
+            <div class="radio-inline-group">
+                <label class="radio-inline-label"><input type="radio" name="q3_2" value="はい" required> はい</label>
+                <label class="radio-inline-label"><input type="radio" name="q3_2" value="いいえ"> いいえ</label>
+                <label class="radio-inline-label"><input type="radio" name="q3_2" value="わからない"> わからない</label>
+            </div>
+
+            <p style="font-size: 13px; font-weight: bold; margin: 16px 0 6px 0;">【第3問：クラス人数の問題】</p>
+            <div class="radio-inline-group">
+                <label class="radio-inline-label"><input type="radio" name="q3_3" value="はい" required> はい</label>
+                <label class="radio-inline-label"><input type="radio" name="q3_3" value="いいえ"> いいえ</label>
+                <label class="radio-inline-label"><input type="radio" name="q3_3" value="わからない"> わからない</label>
+            </div>
+        </div>
+
 
         <div class="survey-group">
-            <label class="survey-label">Q3. 提示されたAIの分析ヒントや解説を、どの程度参考にしましたか？</label>
+            <label class="survey-label">Q4. 提示されたAIの分析ヒントや解説を、どの程度参考にしましたか？</label>
             <div class="likert-scale">
-                <div class="likert-option"><label><input type="radio" name="q3" value="1" required> 全く参考にしなかった</label></div>
-                <div class="likert-option"><label><input type="radio" name="q3" value="2"> あまり参考にしなかった</label></div>
-                <div class="likert-option"><label><input type="radio" name="q3" value="3"> どちらとも言えない</label></div>
-                <div class="likert-option"><label><input type="radio" name="q3" value="4"> ある程度参考にした</label></div>
-                <div class="likert-option"><label><input type="radio" name="q3" value="5"> 強く参考にした</label></div>
+                <div class="likert-option"><label><input type="radio" name="q4" value="1" required> 全く参考にしなかった</label></div>
+                <div class="likert-option"><label><input type="radio" name="q4" value="2"> あまり参考にしなかった</label></div>
+                <div class="likert-option"><label><input type="radio" name="q4" value="3"> どちらとも言えない</label></div>
+                <div class="likert-option"><label><input type="radio" name="q4" value="4"> ある程度参考にした</label></div>
+                <div class="likert-option"><label><input type="radio" name="q4" value="5"> 強く参考にした</label></div>
             </div>
         </div>
 
         <!-- 尺度を1（低）→5（高）に統一 -->
         <div class="survey-group">
-            <label class="survey-label">Q4. 日常の生活や課題・業務で生成AI（ChatGPT, Gemini等）をどのくらいの頻度で利用していますか？</label>
+            <label class="survey-label">Q5. 日常の生活や課題・業務で生成AI（ChatGPT, Gemini等）をどのくらいの頻度で利用していますか？</label>
             <div class="likert-scale">
-                <div class="likert-option"><label><input type="radio" name="q4" value="1" required> ほぼ使わない/全く使わない</label></div>
-                <div class="likert-option"><label><input type="radio" name="q4" value="2"> 月1〜3回程度</label></div>
-                <div class="likert-option"><label><input type="radio" name="q4" value="3"> 週1回程度</label></div>
-                <div class="likert-option"><label><input type="radio" name="q4" value="4"> 週2〜3回程度</label></div>
-                <div class="likert-option"><label><input type="radio" name="q4" value="5"> ほぼ毎日</label></div>
+                <div class="likert-option"><label><input type="radio" name="q5" value="1" required> ほぼ使わない/全く使わない</label></div>
+                <div class="likert-option"><label><input type="radio" name="q5" value="2"> 月1〜3回程度</label></div>
+                <div class="likert-option"><label><input type="radio" name="q5" value="3"> 週1回程度</label></div>
+                <div class="likert-option"><label><input type="radio" name="q5" value="4"> 週2〜3回程度</label></div>
+                <div class="likert-option"><label><input type="radio" name="q5" value="5"> ほぼ毎日</label></div>
             </div>
         </div>
 
         <div class="survey-group">
-            <label class="survey-label">Q5. 日頃から、AI（ChatGPT, Gemini等）が出力する情報や回答をどの程度信頼していますか？</label>
+            <label class="survey-label">Q6. 日頃から、AI（ChatGPT, Gemini等）が出力する情報や回答をどの程度信頼していますか？</label>
             <div class="likert-scale">
-                <div class="likert-option"><label><input type="radio" name="q5" value="1" required> 全く信頼していない</label></div>
-                <div class="likert-option"><label><input type="radio" name="q5" value="2"> あまり信頼していない</label></div>
-                <div class="likert-option"><label><input type="radio" name="q5" value="3"> どちらとも言えない</label></div>
-                <div class="likert-option"><label><input type="radio" name="q5" value="4"> ある程度信頼している</label></div>
-                <div class="likert-option"><label><input type="radio" name="q5" value="5"> 非常に信頼している</label></div>
+                <div class="likert-option"><label><input type="radio" name="q6" value="1" required> 全く信頼していない</label></div>
+                <div class="likert-option"><label><input type="radio" name="q6" value="2"> あまり信頼していない</label></div>
+                <div class="likert-option"><label><input type="radio" name="q6" value="3"> どちらとも言えない</label></div>
+                <div class="likert-option"><label><input type="radio" name="q6" value="4"> ある程度信頼している</label></div>
+                <div class="likert-option"><label><input type="radio" name="q6" value="5"> 非常に信頼している</label></div>
             </div>
         </div>
 
         <div class="survey-group">
-            <label class="survey-label">Q6. 回答時に意識したことや、AIのヒントに対する感想があれば自由にご記入ください（任意）：</label>
-            <textarea name="q6" class="survey-textarea"></textarea>
+            <label class="survey-label">Q7. 回答時に意識したことや、AIのヒントに対する感想があれば自由にご記入ください。（任意）</label>
+            <textarea name="q7" class="survey-textarea"></textarea>
         </div>
 
         <div class="survey-group">
-            <label class="survey-label">Q7. 性別をお答えください：</label>
+            <label class="survey-label">Q8. 性別をお答えください。</label>
             <div class="radio-inline-group">
                 <label class="radio-inline-label"><input type="radio" name="gender" value="男性" required> 男性</label>
                 <label class="radio-inline-label"><input type="radio" name="gender" value="女性"> 女性</label>
@@ -622,20 +716,22 @@
         </div>
 
         <div class="survey-group">
-            <label class="survey-label">Q8. 年代をお答えください：</label>
+            <label class="survey-label">Q9. 年代をお答えください。</label>
             <div class="radio-inline-group">
                 <label class="radio-inline-label"><input type="radio" name="age" value="10代" required> 10代</label>
                 <label class="radio-inline-label"><input type="radio" name="age" value="20代"> 20代</label>
                 <label class="radio-inline-label"><input type="radio" name="age" value="30代"> 30代</label>
                 <label class="radio-inline-label"><input type="radio" name="age" value="40代"> 40代</label>
                 <label class="radio-inline-label"><input type="radio" name="age" value="50代"> 50代</label>
-                <label class="radio-inline-label"><input type="radio" name="age" value="60代以上"> 60代以上</label>
+                <label class="radio-inline-label"><input type="radio" name="age" value="60代"> 60代</label>
+                <label class="radio-inline-label"><input type="radio" name="age" value="70代以上"> 70代以上</label>
             </div>
         </div>
 
             <button type="button" class="start-btn" onclick="submitSurveyAndFinish()">アンケートを送信して実験を完了する</button>
         </form>
     </div>
+
 
     <!-- 実験完了画面 -->
     <div id="finish-page">
@@ -651,8 +747,8 @@
 </div>
 
         <p class="finish-text" style="margin-top: 25px;">
-            <strong>このままブラウザのタブまたはウィンドウを閉じて終了してください。</strong>
-        </p>
+            <u>キーワードは<strong>「たちつてと」</strong>
+です。</u><br>このままブラウザのタブまたはウィンドウを閉じて終了してください。        </p>
     </div>
 </div>
 
@@ -890,24 +986,33 @@
         const form = document.getElementById('survey-form');
         
         // アンケート必須チェック
-        if (!form.q1.value || !form.q2_1.value || !form.q2_2.value || !form.q2_3.value || 
-            !form.q3.value || !form.q4.value || !form.q5.value || !form.gender.value || !form.age.value) {
-            alert("アンケートの必須項目にすべて回答してください。");
-            return;
-        }
+         if (!form.q1.value || !form.q2_1.value || !form.q2_2.value || !form.q2_3.value || 
+        !form.q3_1.value || !form.q3_2.value || !form.q3_3.value ||
+        !form.q4.value || !form.q5.value || !form.q6.value || 
+        !form.gender.value || !form.age.value) {
+        alert("アンケートの必須項目にすべて回答してください。");
+        return;
+    }
+
 
         const surveyData = {
-            q1: form.q1.value,
-            q2_1: form.q2_1.value,
-            q2_2: form.q2_2.value,
-            q2_3: form.q2_3.value,
-            q3: form.q3.value,           // Q3 (AIヒントの信頼度)
-            q4: form.q4.value,           // Q4 (日常での利用頻度)
-            q5: form.q5.value,           // Q5 (日常での信頼度)
-            q6: form.q6 ? form.q6.value : "", // Q6 (自由記述)
-            gender: form.gender.value,
-            age: form.age.value
-        };
+        q1: form.q1.value,
+        q2_1: form.q2_1.value,
+        q2_2: form.q2_2.value,
+        q2_3: form.q2_3.value,
+
+        q3_1: form.q3_1.value,
+        q3_2: form.q3_2.value,
+        q3_3: form.q3_3.value,
+
+        q4: form.q4.value,
+        q5: form.q5.value,
+        q6: form.q6.value,
+        q7: form.q7 ? form.q7.value : "",
+
+        gender: form.gender.value,
+        age: form.age.value
+    };
 
         sendDataToGoogleForm(surveyData);
     }
@@ -945,13 +1050,17 @@
         formData.append("entry.988444031", String(surveyData.q2_2));       // 15: Q2-2 (第2問の自信度)
         formData.append("entry.1789393943", String(surveyData.q2_3));     // 16: Q2-3 (第3問の自信度)
 
-        // ↓↓↓ ここを修正（surveyData.q3〜q6 に変更） ↓↓↓
-        formData.append("entry.1010106696", String(surveyData.q3));      // 17: Q3 (AIヒントの信頼)
-        formData.append("entry.806688180", String(surveyData.q4));       // 18: Q4 (日常での利用頻度)
-        formData.append("entry.2068974292", String(surveyData.q5));      // 19: Q5 (日常での信頼度)
-        formData.append("entry.1303222963", String(surveyData.q6 || "")); // 20: Q6 (自由記述)
-        formData.append("entry.55984102", String(surveyData.gender));    // 21: 性別
-        formData.append("entry.410265648", String(surveyData.age));       // 22: 年代
+        // 追加分：Q3（事前知識・既視感）
+        formData.append("entry.255778527", String(surveyData.q3_1));       // 17: Q3-1 (第1問の既視感)
+        formData.append("entry.970280744", String(surveyData.q3_2));       // 18: Q3-2 (第2問の既視感)
+        formData.append("entry.739745933", String(surveyData.q3_3));       // 19: Q3-3 (第3問の既視感)
+
+        formData.append("entry.1010106696", String(surveyData.q4));        // 20: Q4 (AIヒントを参考にした程度)
+        formData.append("entry.806688180", String(surveyData.q5));         // 21: Q5 (日常での利用頻度)
+        formData.append("entry.2068974292", String(surveyData.q6));        // 22: Q6 (日常での信頼度)
+        formData.append("entry.1303222963", String(surveyData.q7 || ""));  // 23: Q7 (自由記述)
+        formData.append("entry.55984102", String(surveyData.gender));      // 24: Q8 (性別)
+        formData.append("entry.410265648", String(surveyData.age));         // 25: Q9 (年代)
 
         fetch(formUrl, {
             method: "POST",
